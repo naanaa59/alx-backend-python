@@ -4,7 +4,7 @@
 
 import unittest
 import unittest.mock
-from parameterized import parameterized # type: ignore
+from parameterized import parameterized  # type: ignore
 from utils import access_nested_map
 from utils import get_json
 from utils import memoize
@@ -26,7 +26,7 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": 1}, ("a", "b"), KeyError),
     ])
     def test_access_nested_map_exception(self,
-                                         nested_map, path, expected)-> None:
+                                         nested_map, path, expected) -> None:
         """ access nest map Exception"""
         with self.assertRaises(expected):
             access_nested_map(nested_map, path)
