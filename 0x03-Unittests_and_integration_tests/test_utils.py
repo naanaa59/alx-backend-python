@@ -52,6 +52,7 @@ class TestGetJson(unittest.TestCase):
 class TestMemoize(unittest.TestCase):
     """ TestMemoize test class """
     def test_memoize(self):
+        """ Test memoize method definition"""
         class TestClass:
             def a_method(self):
                 return 42
