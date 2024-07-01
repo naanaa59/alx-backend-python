@@ -3,11 +3,12 @@
 
 
 import unittest
-import unittest.mock
+from unittest.mock import patch, MagicMock
 from parameterized import parameterized  # type: ignore
 from utils import access_nested_map
 from utils import get_json
 from utils import memoize
+from typing import Dict, Tuple, Union, Type
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -17,7 +18,10 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2),
         ])
-    def test_access_nested_map(self, nested_map, path, expected) -> None:
+    def test_access_nested_map(self,
+                               nested_map: Dict,
+                               path: Tuple,
+                               expected: Union[Dict, int]) -> None:
         """ access_nested_map """
         self.assertEqual(access_nested_map(nested_map, path), expected)
 
@@ -26,7 +30,10 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": 1}, ("a", "b"), KeyError),
     ])
     def test_access_nested_map_exception(self,
-                                         nested_map, path, expected) -> None:
+                                         nested_map: Dict,
+                                         path: Tuple[str],
+                                         expected: Union[Type[BaseException]]
+                                         ) -> None:
         """ access nest map Exception"""
         with self.assertRaises(expected):
             access_nested_map(nested_map, path)
@@ -37,8 +44,10 @@ class TestGetJson(unittest.TestCase):
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False}),
     ])
-    @unittest.mock.patch('utils.requests.get')
-    def test_get_json(self, test_url, test_payload, mock_get) -> None:
+    @patch('utils.requests.get')
+    def test_get_json(self, test_url: str,
+                      test_payload: Dict,
+                      mock_get) -> None:
         """ test that utils.get_json returns the expected result"""
         mock_response = mock_get.return_value
         mock_response.json.return_value = test_payload
@@ -63,7 +72,7 @@ class TestMemoize(unittest.TestCase):
             def a_property(self):
                 return self.a_method()
 
-        with unittest.mock.patch.object(
+        with patch.object(
              TestClass, 'a_method', return_value=42) as mock_a_method:
             test_instance = TestClass()
 
