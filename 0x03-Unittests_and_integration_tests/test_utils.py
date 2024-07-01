@@ -4,7 +4,7 @@
 
 import unittest
 import unittest.mock
-from parameterized import parameterized
+from parameterized import parameterized # type: ignore
 from utils import access_nested_map
 from utils import get_json
 from utils import memoize
@@ -17,7 +17,7 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2),
         ])
-    def test_access_nested_map(self, nested_map, path, expected):
+    def test_access_nested_map(self, nested_map, path, expected) -> None:
         """ access_nested_map """
         self.assertEqual(access_nested_map(nested_map, path), expected)
 
@@ -25,7 +25,8 @@ class TestAccessNestedMap(unittest.TestCase):
         ({}, ("a",), KeyError),
         ({"a": 1}, ("a", "b"), KeyError),
     ])
-    def test_access_nested_map_exception(self, nested_map, path, expected):
+    def test_access_nested_map_exception(self,
+                                         nested_map, path, expected)-> None:
         """ access nest map Exception"""
         with self.assertRaises(expected):
             access_nested_map(nested_map, path)
@@ -37,7 +38,7 @@ class TestGetJson(unittest.TestCase):
         ("http://holberton.io", {"payload": False}),
     ])
     @unittest.mock.patch('utils.requests.get')
-    def test_get_json(self, test_url, test_payload, mock_get):
+    def test_get_json(self, test_url, test_payload, mock_get) -> None:
         """ test that utils.get_json returns the expected result"""
         mock_response = mock_get.return_value
         mock_response.json.return_value = test_payload
